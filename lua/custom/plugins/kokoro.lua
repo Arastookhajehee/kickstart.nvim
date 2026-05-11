@@ -25,7 +25,7 @@ require('kokoro').setup({
   player = 'mpv',
   load_voices = true,
   voice = 'af_aoede',
-  speed = 1.3,
+  speed = 1.2,
 })
 -- NOTE: keep explicit visual range to avoid mode/range ambiguity
 vim.keymap.set('v', '<leader>kk', ":'<,'>Kokoro<CR>", { noremap = true, silent = true, desc = 'Read selected text with Kokoro' })
