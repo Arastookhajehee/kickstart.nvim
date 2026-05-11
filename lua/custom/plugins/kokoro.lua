@@ -11,14 +11,15 @@ vim.pack.add({
 
 local ok, err = pcall(require, 'rex_pcre2')
 if not ok then
-  vim.notify(
-    'kokoro.nvim: failed to load rex_pcre2 (' .. tostring(err) .. '). Install with: luarocks install --local lrexlib-pcre2 --lua-version=5.1',
-    vim.log.levels.ERROR
-  )
+  -- vim.notify(
+  --   'kokoro.nvim: failed to load rex_pcre2 (' .. tostring(err) .. '). Install with: luarocks install --local lrexlib-pcre2 --lua-version=5.1',
+  --   vim.log.levels.ERROR
+  -- )
   return
 end
 require('kokoro').setup({
   debug = false,
+  notify_min_level = vim.log.levels.ERROR,
   path = vim.fn.expand('~/tools/kokoro_nvim'),
   uv = true,
   player = 'mpv',
@@ -26,8 +27,8 @@ require('kokoro').setup({
   voice = 'af_aoede',
   speed = 1.3,
 })
--- NOTE: use ":" form (not <Cmd>) so visual range passes correctly
-vim.keymap.set('v', '<leader>kk', ':Kokoro<CR>', { noremap = true, silent = true, desc = 'Read selected text with Kokoro' })
+-- NOTE: keep explicit visual range to avoid mode/range ambiguity
+vim.keymap.set('v', '<leader>kk', ":'<,'>Kokoro<CR>", { noremap = true, silent = true, desc = 'Read selected text with Kokoro' })
 vim.keymap.set('n', '<leader>kk', ':Kokoro<CR>', { noremap = true, silent = true, desc = 'Read current line with Kokoro' })
 vim.keymap.set('n', '<leader>kK', ':KokoroStop<CR>', { noremap = true, silent = true, desc = 'Stop Kokoro audio' })
 vim.keymap.set('n', '<leader><leader>kkv', ':KokoroChooseVoice<CR>', { noremap = true, silent = true, desc = 'Choose Kokoro voice' })
