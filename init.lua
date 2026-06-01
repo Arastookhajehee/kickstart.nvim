@@ -699,6 +699,14 @@ do
         )
       end,
     },
+    vtsls = {
+      settings = {
+          vtsls = {
+            -- optional vtsls settings
+          },
+        },
+    },
+ 
     -- rust_analyzer = {},
     --
     -- Some languages (like typescript) have entire language plugins that can be useful:
