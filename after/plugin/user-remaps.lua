@@ -106,15 +106,10 @@ map('n', '<leader>z', function()
   vscode_like_find_in_buffer()
 end, { desc = 'Global fuzzy search' })
 
-map('n', '<leader>o', function()
+map('n', '<leader>f', function()
   if with_telescope(function(builtin) builtin.find_files() end) then return end
   vim.cmd 'edit .'
 end, { desc = 'Find files' })
-
-map('n', '<leader>p', function()
-  if with_telescope(function(builtin) builtin.find_files() end) then return end
-  vim.cmd 'edit .'
-end, { desc = 'Quick open' })
 
 map('n', '<leader>s', function()
   if with_telescope(function(builtin) builtin.lsp_document_symbols() end) then return end
