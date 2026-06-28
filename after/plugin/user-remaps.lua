@@ -73,7 +73,8 @@ map('n', 'N', 'Nzzzv')
 map('n', '<leader>zig', '<cmd>LspRestart<CR>')
 
 map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and '<C-y>' or '<Tab>' end, { expr = true })
-map('i', 'jj', '<Esc>')
+map('i', 'ii', '<Esc>')
+map('t', 'ii', '<Esc><Esc>')
 
 map('n', '<leader>f', vscode_like_find_in_buffer, { desc = 'Find in buffer' })
 map('n', '<leader>r', [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = 'Replace current word' })
