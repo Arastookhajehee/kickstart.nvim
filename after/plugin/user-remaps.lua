@@ -11,6 +11,22 @@ end
 
 local function vscode_like_find_in_buffer() vim.api.nvim_feedkeys('/', 'n', false) end
 
+local function with_telescope_builtin(name, fallback)
+  return function(...)
+    local ok, builtin = pcall(require, 'telescope.builtin')
+    if ok and builtin[name] then
+      return builtin[name](...)
+    end
+    if fallback then return fallback(...) end
+  end
+end
+
+local function insert_date_jst()
+  local stamp = vim.fn.system { 'date', '-u', '-d', '+9 hours', '+%Y%m%d-%H:%M' }
+  if vim.v.shell_error ~= 0 then stamp = os.date('!%Y%m%d-%H:%M', os.time() + 9 * 60 * 60) end
+  vim.api.nvim_put({ vim.trim(stamp) }, 'c', true, true)
+end
+
 local function set_mark(is_global)
   local label = is_global and 'Global mark (A-Z): ' or 'Local mark (a-z): '
   local mark = vim.fn.input(label)
@@ -46,6 +62,19 @@ vim.opt.signcolumn = 'yes'
 vim.opt.isfname:append '@-@'
 vim.opt.colorcolumn = '100,120'
 vim.opt.clipboard = 'unnamedplus'
+vim.opt.spell = true
+vim.opt.spelllang = 'en_us'
+
+vim.filetype.add {
+  pattern = {
+    ['.*%.uxml'] = 'xml',
+    ['.*%.uss'] = 'css',
+    ['%.env.*'] = 'sh',
+  },
+  filename = {
+    ['.env'] = 'sh',
+  },
+}
 
 map({ 'n', 'v' }, 'y', '"+y', { noremap = true, silent = true })
 map('n', 'Y', '"+yy', { noremap = true, silent = true })
@@ -71,6 +100,10 @@ map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 map('n', '<leader>zig', '<cmd>LspRestart<CR>')
 
+map('x', '<C-_>', 'gc', { remap = true, desc = 'Toggle comment selection' })
+map('x', '<C-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
+map('x', '<C-S-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
+
 map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and '<C-y>' or '<Tab>' end, { expr = true })
 map('i', 'ii', '<Esc>')
 map('t', 'ii', '<Esc><Esc>')
@@ -87,14 +120,16 @@ map('n', '<leader>d', function()
       return
     end
   end
-  vim.lsp.buf.definition()
+  with_telescope_builtin('lsp_definitions', vim.lsp.buf.definition)()
 end, { desc = 'Go to definition' })
 
-map('n', '<leader>D', function() vim.lsp.buf.references() end, { desc = 'Go to references' })
+map('n', '<leader>D', with_telescope_builtin('lsp_references', vim.lsp.buf.references), { desc = 'Go to references' })
 
 map('n', '<leader>h', function() vim.lsp.buf.hover() end, { desc = 'Hover docs' })
 
 map({ 'n', 'x' }, '<leader>H', function() vim.lsp.buf.code_action() end, { desc = 'Code action' })
+
+map('n', '<leader>q', with_telescope_builtin('quickfix', vim.diagnostic.setloclist), { desc = 'Quickfix picker' })
 
 map('n', '<leader>g', function()
   if with_telescope(function(builtin) builtin.live_grep() end) then return end
@@ -115,13 +150,18 @@ map('n', '<leader>s', function()
   if with_telescope(function(builtin) builtin.lsp_document_symbols() end) then return end
   vim.lsp.buf.document_symbol()
 end, { desc = 'Document symbols' })
-vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfix, { desc = '[S]earch [Q]       uickfix' })                                                                                           
+vim.keymap.set('n', '<leader>sq', with_telescope_builtin('quickfix', vim.diagnostic.setloclist), { desc = '[S]earch [Q]uickfix' })
 
 map('n', '<leader>w', '<cmd>write<CR>', { desc = 'Save file' })
+
+map('n', '<leader>c', '<cmd>Gitsigns next_hunk<CR>', { desc = 'Next git hunk' })
+map('n', '<leader>C', '<cmd>Gitsigns prev_hunk<CR>', { desc = 'Previous git hunk' })
+
+map({ 'n', 'i' }, '<leader>id', insert_date_jst, { desc = 'Insert JST date string' })
 
 map('n', '<leader>m', function() set_mark(false) end, { desc = 'Set local mark' })
 
 map('n', '<leader>M', function() set_mark(true) end, { desc = 'Set global mark' })
 
-map('n', "<leader>'", '<cmd>marks<CR>', { desc = 'List marks' })
-map('n', '<leader>"', '<cmd>marks<CR>', { desc = 'List all marks' })
+map('n', "<leader>'", with_telescope_builtin('marks', function() vim.cmd 'marks' end), { desc = 'List marks' })
+map('n', '<leader>"', with_telescope_builtin('marks', function() vim.cmd 'marks' end), { desc = 'List all marks' })

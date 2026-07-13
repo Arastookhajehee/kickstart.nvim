@@ -8,7 +8,7 @@
 - `after/plugin/*.lua` runs after startup and can add plugins or override earlier settings/keymaps; check it before treating `init.lua` as final.
 
 ## Commands
-- Format/check Lua with `stylua --check .`; there is no repo-local task runner or CI workflow in this checkout.
+- Format/check Lua with `stylua --check .`; the only workflow is `.github/workflows/stylua.yml`, gated to `nvim-lua/kickstart.nvim` on `pull_request_target`.
 - Local `stylua` may not be installed; install it before relying on the format check.
 - Verify the config with `nvim --headless '+checkhealth kickstart' '+qa'` when plugin/runtime changes are relevant.
 - Inspect pending `vim.pack` plugin updates inside Neovim with `:lua vim.pack.update(nil, { offline = true })`; fetch/apply updates with `:lua vim.pack.update()` then write the update buffer.
@@ -23,6 +23,7 @@
 - Zotero citation support in `lua/custom/plugins/zocite.lua` builds `/mnt/c/Users/$WIN_USERNAME/Zotero/zotero.sqlite`; guard or preserve that WSL-specific assumption when editing it.
 - Image and diagram plugins use the Kitty graphics backend, `magick_cli`, and Mermaid CLI options; changes may depend on the user's terminal and external binaries.
 - `kokoro.nvim` only configures if `rex_pcre2` can be loaded from local LuaRocks paths and expects `~/tools/kokoro_nvim` plus `mpv`.
+- `after/plugin/my-theme.lua` adds `nightfox.nvim` and switches to `nordfox` after `init.lua` loads `tokyonight-night`.
 
 ## Style
 - Lua formatting follows `.stylua.toml`: 2-space indents, Unix line endings, 160-column width, auto-prefer single quotes, no call parentheses when allowed.

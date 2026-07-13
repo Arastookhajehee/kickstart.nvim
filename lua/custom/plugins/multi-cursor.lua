@@ -1,5 +1,5 @@
 vim.pack.add {
-  { src = 'https://github.com/jake-stewart/multicursor.nvim'},
+  { src = 'https://github.com/jake-stewart/multicursor.nvim' },
 }
 
 local mc = require 'multicursor-nvim'
@@ -14,10 +14,10 @@ set({ 'n', 'x' }, '<leader><up>', function() mc.lineSkipCursor(-1) end)
 set({ 'n', 'x' }, '<leader><down>', function() mc.lineSkipCursor(1) end)
 
 -- Add or skip adding a new cursor by matching word/selection
-set({ 'n', 'x' }, '<leader>n', function() mc.matchAddCursor(1) end)
-set({ 'n', 'x' }, '<leader>s', function() mc.matchSkipCursor(1) end)
-set({ 'n', 'x' }, '<leader>N', function() mc.matchAddCursor(-1) end)
-set({ 'n', 'x' }, '<leader>S', function() mc.matchSkipCursor(-1) end)
+set({ 'n', 'x' }, '<leader>mn', function() mc.matchAddCursor(1) end, { desc = 'Multicursor: add next match' })
+set({ 'n', 'x' }, '<leader>ms', function() mc.matchSkipCursor(1) end, { desc = 'Multicursor: skip next match' })
+set({ 'n', 'x' }, '<leader>mN', function() mc.matchAddCursor(-1) end, { desc = 'Multicursor: add previous match' })
+set({ 'n', 'x' }, '<leader>mS', function() mc.matchSkipCursor(-1) end, { desc = 'Multicursor: skip previous match' })
 
 -- Add and remove cursors with control + left click.
 set('n', '<c-leftmouse>', mc.handleMouse)
