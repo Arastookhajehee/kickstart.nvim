@@ -1,0 +1,227 @@
+{
+  "workbench.colorTheme": "Terafox",
+  "workbench.colorCustomizations": {
+    "editorRuler.foreground": "#444444",
+    "editor.selectionBackground": "#a0a0a066",
+    "editor.findMatchBackground": "#c8c8c8aa",
+    "editor.findMatchHighlightBackground": "#e0e0e066",
+    "editor.lineHighlightBackground": "#1f1f1f",
+    "peekView.border": "#a0a0a070",
+    "peekViewResult.background": "#97979700",
+    "terminal.background": "#00000000",
+    "terminalOverviewRuler.border": "#00000000"
+  },
+  "markdownInlineEditor.colors.horizontalRule": "#545962",
+  "editor.mouseWheelZoom": true,
+  "editor.guides.indentation": false,
+  "editor.guides.highlightActiveIndentation": false,
+  "terminal.integrated.mouseWheelZoom": true,
+
+  "editor.rulers": [100, 120],
+  "editor.minimap.enabled": false,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "vscode-neovim.compositeKeys": {
+    "ii": {
+      "command": "vscode-neovim.escape"
+    }
+  },
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\vscode_neovim\\nvim-win64\\bin\\nvim.exe",
+  "vscode-neovim.neovimInitVimPaths.win32": "C:\\tools\\vscode_neovim\\config\\init.lua",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "multiCommand.commands": [
+    {
+      "command": "multiCommand.selectWordAndReplace",
+      "sequence": [
+        "cursorWordStartLeft",
+        "cursorWordEndRightSelect",
+        "editor.action.startFindReplaceAction",
+      ]
+    },
+  ],
+  "editor.lineNumbers": "relative",
+  "editor.glyphMargin": true,
+  "redhat.telemetry.enabled": false,
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "files.associations": {
+    "*.uxml": "xml",
+    "*.uss": "css",
+    ".env*": "dotenv"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "python.autoComplete.extraPaths": [],
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "editor.autoClosingComments": "never",
+  "explorer.confirmDelete": false,
+  "csharp.experimental.debug.hotReload": true,
+  "find-it-faster.findWithinFiles.fuzzRipgrepQuery": true,
+  "workbench.startupEditor": "none",
+  "git.openRepositoryInParentFolders": "always",
+  "[csharp]": {
+    "editor.maxTokenizationLineLength": 2500
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "remote.SSH.remotePlatform": {
+    "172.21.1.108": "linux"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDragAndDrop": false,
+  "git.ignoreRebaseWarning": true,
+  "security.allowedUNCHosts": ["wsl.localhost"],
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.smoothScrolling": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "workbench.list.smoothScrolling": true,
+  "editor.formatOnSave": false,
+  "zenMode.hideLineNumbers": false,
+  "terminal.integrated.suggest.enabled": true,
+  "markdownlint.config": {},
+  "cSpell.userWords": [
+    "Arastoo",
+    "Argb",
+    "aspnet",
+    "CBCA",
+    "CCTR",
+    "Colour",
+    "Curobo",
+    "Fabricability",
+    "focusable",
+    "frameless",
+    "Gondo",
+    "guids",
+    "Haseman",
+    "IKDS",
+    "Ikeda",
+    "insertable",
+    "Khajehee",
+    "markless",
+    "Newtonsoft",
+    "PGADMIN",
+    "Remo",
+    "sensei",
+    "TIMESTAMPTZ",
+    "Tomoyuki",
+    "UXML",
+    "Yasushi"
+  ],
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.editorAssociations": {
+    "*.md": "default",
+    "*.markdown": "default"
+  },
+  "terminal.integrated.profiles.windows": {
+    "PowerShell 7": {
+      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "icon": "terminal-powershell"
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+  "terminal.integrated.suggest.providers": {
+    "lsp": true
+  },
+  "terminal.integrated.suggest.quickSuggestions": {
+    "arguments": "on",
+    "commands": "on",
+    "unknown": "on"
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "window.titleBarStyle": "custom",
+  "editor.accessibilitySupport": "off",
+  "[dockercompose]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": []
+  },
+  "dotenv.enableAutocloaking": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "excalidraw.language": "en",
+  "excalidraw.theme": "auto",
+  "hediet.vscode-drawio.resizeImages": null,
+  "terminal.integrated.enableImages": true,
+  "editor.inlineSuggest.experimental.showOnSuggestConflict": "always",
+  "vscode_custom_css.imports": [
+    "file:///C:/Users/khaje/AppData/Roaming/Code/User/global.css",
+  ],
+  "markless.cursorDisables": true,
+  "markless.cursorLineDisables": true,
+  "markless.customStyle": "markless.css",
+  "markless.emphasis": false,
+  "markless.debug": false,
+  "markless.heading": false,
+  "markless.horizontalRule": false,
+  "markless.hoverImage": false,
+  "markless.html": false,
+  "markless.inlineCode": false,
+  "markless.inlineImage.autoPreview": true,
+  "markless.inlineImage.enabled": true,
+  "markless.latex": false,
+  "markless.link": true,
+  "markless.list": false,
+  "markless.quote": false,
+  "markless.table": true,
+  "zenMode.showTabs": "none",
+  "workbench.editor.useModal": "off",
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "insertDateString.timezone": "JST",
+  "insertDateString.format": "YYYYMMDD-HH:mm",
+  "terminal.integrated.fontSize": 16,
+  "typescript.experimental.useTsgo": true,
+  "background.fullscreen": {
+
+    "images": ["C:\\Users\\khaje\\source\\repos\\utilities\\config.arastoo\\vscode\\backgrounds\\STScI-01HRD5591YGCDZ4YWZNHZX4BMK.png"],
+    "opacity": 0.1,
+    "size": "cover",
+    "position": "center",
+    "interval": 0,
+    "random": false
+  },
+  "chat.viewSessions.orientation": "stacked",
+  "remote.autoForwardPortsSource": "hybrid",
+  "workbench.browser.searchEngine": "google",
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,21 @@
+     {                                                                                                 
+       "command": {                                                                                    
+         "action": "sendInput",                                                                        
+         "input": "\u001b[75;6u"                                                                       
+       },                                                                                              
+       "keys": "ctrl+shift+k"                                                                          
+     },                                                                                                
+     {                                                                                                 
+       "command": {                                                                                    
+         "action": "sendInput",                                                                        
+         "input": "\u001b[74;6u"                                                                       
+       },                                                                                              
+       "keys": "ctrl+shift+j"                                                                          
+     },                                                                                                
+     {                                                                                                 
+       "command": {                                                                                    
+         "action": "sendInput",                                                                        
+         "input": "\u001b[71;6u"                                                                       
+       },                                                                                              
+       "keys": "ctrl+shift+g"                                                                          
+     }                                                                                                 

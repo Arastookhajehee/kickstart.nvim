@@ -3,11 +3,12 @@
 ## Shape
 - This is a personal Neovim config forked from `kickstart.nvim`, but the active config is not stock Kickstart.
 - `init.lua` is the main entrypoint and uses Neovim 0.12+ built-in `vim.pack`; do not assume `lazy.nvim` manages current plugins.
+- `init.lua` explicitly requires the example modules in `lua/kickstart/plugins/` and then `require 'custom.plugins'`; those example files are active, not dormant templates.
 - `lua/custom/plugins/init.lua` auto-requires every `*.lua` file in `lua/custom/plugins/` except itself, so adding a file there enables it on startup.
-- `after/plugin/*.lua` runs after startup and overrides earlier settings/keymaps; check it before assuming an `init.lua` mapping is final.
+- `after/plugin/*.lua` runs after startup and can add plugins or override earlier settings/keymaps; check it before treating `init.lua` as final.
 
 ## Commands
-- Format/check Lua with `stylua --check .`; CI uses the same command via `.github/workflows/stylua.yml`.
+- Format/check Lua with `stylua --check .`; there is no repo-local task runner or CI workflow in this checkout.
 - Local `stylua` may not be installed; install it before relying on the format check.
 - Verify the config with `nvim --headless '+checkhealth kickstart' '+qa'` when plugin/runtime changes are relevant.
 - Inspect pending `vim.pack` plugin updates inside Neovim with `:lua vim.pack.update(nil, { offline = true })`; fetch/apply updates with `:lua vim.pack.update()` then write the update buffer.
@@ -26,3 +27,4 @@
 ## Style
 - Lua formatting follows `.stylua.toml`: 2-space indents, Unix line endings, 160-column width, auto-prefer single quotes, no call parentheses when allowed.
 - Existing custom plugin files are not uniformly formatted; prefer running Stylua on touched Lua rather than preserving inconsistent whitespace.
+- Do not infer options/keymaps from `init.lua` alone: `after/plugin/user-remaps.lua` changes clipboard behavior, relative numbers, indentation width, wrapping, and many normal-mode editing keys.
