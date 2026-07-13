@@ -614,11 +614,12 @@ Fill each `Decision` field with choices like `translate VS Code to Neovim`,
 - **Markdownlint**
   - VS Code: Markdownlint config empty.
   - Neovim: No markdownlint Neovim integration found.
-  - Decision: skip for neovim
+  - Decision: Markdownlint is installed on neovim. Keep neovim config
 - **CSpell dictionary**
   - VS Code: `cSpell.userWords` custom dictionary.
   - Neovim: No cspell/null-ls/lint dictionary integration found.
-  - Decision: skip for neovim
+  - Decision: I want real-time always on spellcheck for neovim.
+              The dictionary can be made later.
 - **Markdown editor behavior**
   - VS Code: Markdown opens as normal text editor.
   - Neovim: Markdown uses render-markdown, image.nvim, diagram.nvim.
@@ -714,7 +715,7 @@ Fill each `Decision` field with choices like `translate VS Code to Neovim`,
   - Item: Comment toggles are missing.
   - Why: VS Code has visual `Ctrl+/` and `Ctrl+Shift+/`.
   - Why: Neovim has no comment plugin/keymap found.
-  - Decision: add visual comment and uncomment mappings
+  - Decision: add visual comment and uncomment mappings following vs code keybinds
 - **Tab/editor index navigation missing**
   - Item: Tab/editor index navigation is missing.
   - Why: VS Code `Ctrl+1..9`, `Alt+1..3`, and Open Editors are missing.
