@@ -75,7 +75,7 @@ map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and '<C-y>' or '<Ta
 map('i', 'ii', '<Esc>')
 map('t', 'ii', '<Esc><Esc>')
 
-map('n', '<leader>f', vscode_like_find_in_buffer, { desc = 'Find in buffer' })
+-- map('n', '<leader>f', vscode_like_find_in_buffer, { desc = 'Find in buffer' })
 map('n', '<leader>r', [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = 'Replace current word' })
 map('x', '<leader>r', [[:s/\%V//gc<Left><Left><Left><Left>]], { desc = 'Replace in selection' })
 
@@ -106,15 +106,16 @@ map('n', '<leader>z', function()
   vscode_like_find_in_buffer()
 end, { desc = 'Global fuzzy search' })
 
-map('n', '<leader>f', function()
-  if with_telescope(function(builtin) builtin.find_files() end) then return end
-  vim.cmd 'edit .'
-end, { desc = 'Find files' })
+-- map('n', '<leader>f', function()
+--   if with_telescope(function(builtin) builtin.find_files() end) then return end
+--   vim.cmd 'edit .'
+-- end, { desc = 'Find files' })
 
 map('n', '<leader>s', function()
   if with_telescope(function(builtin) builtin.lsp_document_symbols() end) then return end
   vim.lsp.buf.document_symbol()
 end, { desc = 'Document symbols' })
+vim.keymap.set('n', '<leader>sq', require('telescope.builtin').quickfix, { desc = '[S]earch [Q]       uickfix' })                                                                                           
 
 map('n', '<leader>w', '<cmd>write<CR>', { desc = 'Save file' })
 
