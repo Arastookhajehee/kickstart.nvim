@@ -1,7 +1,7 @@
 local mark_align = {}
 
 local config = {
-	width = 120,
+	width = 80,
 }
 
 local closing_chars = {
