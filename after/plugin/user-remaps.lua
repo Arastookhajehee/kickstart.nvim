@@ -101,6 +101,10 @@ map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 map('n', '<leader>zig', '<cmd>LspRestart<CR>')
 
+-- line home and end
+map({ 'n', 'v' }, 'H', '0', { noremap = true, silent = true })
+map({ 'n', 'v' }, 'L', '$', { noremap = true, silent = true })
+
 map('x', '<C-_>', 'gc', { remap = true, desc = 'Toggle comment selection' })
 map('x', '<C-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
 map('x', '<C-S-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
