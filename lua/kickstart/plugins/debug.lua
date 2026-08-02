@@ -12,6 +12,7 @@ vim.pack.add {
   'https://github.com/nvim-neotest/nvim-nio',
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/jay-babu/mason-nvim-dap.nvim',
+  'https://github.com/ramboe/ramboe-dotnet-utils',
   -- 'https://github.com/leoluz/nvim-dap-go',
 }
 
@@ -19,13 +20,18 @@ vim.pack.add {
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
 vim.keymap.set('n', '<F8>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
 vim.keymap.set('n', '<F1>', function() require('dap').step_into() end, { desc = 'Debug: Step Into' })
+vim.keymap.set('n', '<F11>', function() require('dap').step_into() end, { desc = 'Debug: Step Into' })
 vim.keymap.set('n', '<F2>', function() require('dap').step_over() end, { desc = 'Debug: Step Over' })
+vim.keymap.set('n', '<F10>', function() require('dap').step_over() end, { desc = 'Debug: Step Over' })
 vim.keymap.set('n', '<F3>', function() require('dap').step_out() end, { desc = 'Debug: Step Out' })
 vim.keymap.set('n', '<leader>b', function() require('dap').toggle_breakpoint() end, { desc = 'Debug: Toggle Breakpoint' })
 vim.keymap.set('n', '<F9>', function() require('dap').toggle_breakpoint() end, { desc = 'Debug: Toggle Breakpoint' })
 vim.keymap.set('n', '<leader>B', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, { desc = 'Debug: Set Breakpoint' })
+vim.keymap.set('n', '<leader>dr', function() require('dap').repl.open() end, { desc = 'Debug: Open REPL' })
+vim.keymap.set('n', '<leader>dl', function() require('dap').run_last() end, { desc = 'Debug: Run Last' })
 -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
 vim.keymap.set('n', '<F7>', function() require('dapui').toggle() end, { desc = 'Debug: See last session result.' })
+vim.keymap.set('n', '<leader>du', function() require('dapui').toggle() end, { desc = 'Debug: Toggle UI' })
 
 local dap = require 'dap'
 local dapui = require 'dapui'
@@ -44,6 +50,32 @@ require('mason-nvim-dap').setup {
   ensure_installed = {
     -- Update this to ensure that you have the debuggers for the langs you want
     -- 'delve',
+    'netcoredbg',
+  },
+}
+
+local netcoredbg_path = vim.fn.stdpath 'data' .. '/mason/packages/netcoredbg/netcoredbg'
+local netcoredbg_adapter = {
+  type = 'executable',
+  command = netcoredbg_path,
+  args = { '--interpreter=vscode' },
+}
+
+dap.adapters.netcoredbg = netcoredbg_adapter
+dap.adapters.coreclr = netcoredbg_adapter
+
+dap.configurations.cs = {
+  {
+    type = 'coreclr',
+    name = 'Launch .NET DLL',
+    request = 'launch',
+    program = function() return require('dap-dll-autopicker').build_dll_path() end,
+  },
+  {
+    type = 'coreclr',
+    name = 'Attach to .NET process',
+    request = 'attach',
+    processId = function() return require('dap.utils').pick_process() end,
   },
 }
 

@@ -98,6 +98,13 @@ do
   vim.g.mapleader = ' '
   vim.g.maplocalleader = ' '
 
+  vim.filetype.add {
+    extension = {
+      razor = 'razor',
+      cshtml = 'razor',
+    },
+  }
+
   -- Set to true if you have a Nerd Font installed and selected in the terminal
   vim.g.have_nerd_font = false
 
@@ -700,15 +707,14 @@ do
     -- clangd = {},
     -- gopls = {},
     pyright = {},
-    csharp_ls = {
-      root_dir = function(bufnr, on_dir)
-        local util = require 'lspconfig.util'
-        local fname = vim.api.nvim_buf_get_name(bufnr)
-        on_dir(
-          util.root_pattern('*.sln', '*.slnx', '*.csproj', 'global.json')(fname)
-            or vim.fs.root(fname, function(name) return vim.tbl_contains({ '*.sln', '*.slnx' }, name) end)
-        )
-      end,
+    roslyn_ls = {
+      filetypes = { 'cs', 'razor' },
+      settings = {
+        ['csharp|background_analysis'] = {
+          dotnet_analyzer_diagnostics_scope = 'openFiles',
+          dotnet_compiler_diagnostics_scope = 'openFiles',
+        },
+      },
     },
     vtsls = {
       settings = {
@@ -785,9 +791,12 @@ do
   --    :Mason
   --
   -- You can press `g?` for help in this menu.
-  local ensure_installed = vim.tbl_keys(servers or {})
+  local ensure_installed = vim.tbl_filter(function(name) return name ~= 'roslyn_ls' end, vim.tbl_keys(servers or {}))
   vim.list_extend(ensure_installed, {
     -- You can add other tools here that you want Mason to install
+    'csharpier',
+    'netcoredbg',
+    'roslyn-language-server',
   })
 
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -832,10 +841,19 @@ do
       json = { 'prettierd', 'prettier', stop_after_first = true },
       jsonc = { 'prettierd', 'prettier', stop_after_first = true },
       markdown = { 'prettierd', 'prettier', stop_after_first = true },
+      cs = { 'csharpier' },
       typescript = { 'prettierd', 'prettier', stop_after_first = true },
       typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      xml = { 'xmlformat' },
+      xml = { 'csharpier' },
       yaml = { 'prettierd', 'prettier', stop_after_first = true },
+    },
+    formatters = {
+      csharpier = {
+        command = 'csharpier',
+        args = { 'format', '--write-stdout' },
+        stdin = true,
+        to_stdin = true,
+      },
     },
   }
 
@@ -938,7 +956,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'bash', 'c', 'c_sharp', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'razor', 'vim', 'vimdoc' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
