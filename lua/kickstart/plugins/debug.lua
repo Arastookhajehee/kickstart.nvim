@@ -27,6 +27,8 @@ vim.keymap.set('n', '<F3>', function() require('dap').step_out() end, { desc = '
 vim.keymap.set('n', '<leader>b', function() require('dap').toggle_breakpoint() end, { desc = 'Debug: Toggle Breakpoint' })
 vim.keymap.set('n', '<F9>', function() require('dap').toggle_breakpoint() end, { desc = 'Debug: Toggle Breakpoint' })
 vim.keymap.set('n', '<leader>B', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, { desc = 'Debug: Set Breakpoint' })
+vim.keymap.set({ 'n', 'v' }, '<leader>dh', function() require('dap.ui.widgets').hover() end, { desc = 'Debug: Hover Value' })
+vim.keymap.set({ 'n', 'v' }, '<leader>dp', function() require('dap.ui.widgets').preview() end, { desc = 'Debug: Preview Value' })
 vim.keymap.set('n', '<leader>dr', function() require('dap').repl.open() end, { desc = 'Debug: Open REPL' })
 vim.keymap.set('n', '<leader>dl', function() require('dap').run_last() end, { desc = 'Debug: Run Last' })
 -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
@@ -64,6 +66,63 @@ local netcoredbg_adapter = {
 dap.adapters.netcoredbg = netcoredbg_adapter
 dap.adapters.coreclr = netcoredbg_adapter
 
+local windows_netcoredbg_path = vim.env.WIN_USERNAME and ('/mnt/c/Users/' .. vim.env.WIN_USERNAME .. '/scoop/apps/netcoredbg/3.2.0-1092/netcoredbg.exe')
+
+local function wslpath_to_windows(path)
+  local result = vim.system({ 'wslpath', '-w', path }, { text = true }):wait()
+  if result.code ~= 0 then return nil end
+  return vim.trim(result.stdout)
+end
+
+local function windows_source_file_map()
+  local wsl_cwd = vim.fn.getcwd()
+  local windows_cwd = wslpath_to_windows(wsl_cwd)
+  if not windows_cwd or windows_cwd == '' then return nil end
+  return { [windows_cwd] = wsl_cwd }
+end
+
+local function get_windows_processes()
+  local result = vim.system({
+    'powershell.exe',
+    '-NoProfile',
+    '-Command',
+    [[Get-Process | Where-Object { $_.Path } | Select-Object Id,ProcessName,Path | Sort-Object ProcessName,Id | ConvertTo-Json -Compress]],
+  }, { text = true }):wait()
+
+  if result.code ~= 0 or result.stdout == '' then return nil end
+
+  local ok, processes = pcall(vim.json.decode, result.stdout)
+  if not ok or not processes then return nil end
+  if processes.Id then return { processes } end
+  return processes
+end
+
+local function pick_windows_process()
+  local dap_abort = require('dap').ABORT
+  local processes = get_windows_processes()
+  if not processes or vim.tbl_isempty(processes) then
+    vim.notify('No Windows processes found.', vim.log.levels.ERROR)
+    return dap_abort
+  end
+
+  return coroutine.create(function(dap_run_co)
+    vim.ui.select(processes, {
+      prompt = 'Attach to Windows process',
+      format_item = function(process)
+        return ('%s  %s  %s'):format(process.Id, process.ProcessName, process.Path or '')
+      end,
+    }, function(choice) coroutine.resume(dap_run_co, choice and choice.Id or dap_abort) end)
+  end)
+end
+
+if windows_netcoredbg_path and vim.fn.executable(windows_netcoredbg_path) == 1 then
+  dap.adapters.coreclr_windows = {
+    type = 'executable',
+    command = windows_netcoredbg_path,
+    args = { '--interpreter=vscode' },
+  }
+end
+
 dap.configurations.cs = {
   {
     type = 'coreclr',
@@ -76,6 +135,16 @@ dap.configurations.cs = {
     name = 'Attach to .NET process',
     request = 'attach',
     processId = function() return require('dap.utils').pick_process() end,
+  },
+  {
+    type = 'coreclr_windows',
+    name = 'Attach to Windows .NET process',
+    request = 'attach',
+    processId = pick_windows_process,
+    justMyCode = false,
+    requireExactSource = false,
+    suppressJITOptimizations = true,
+    sourceFileMap = windows_source_file_map,
   },
 }
 
@@ -103,17 +172,24 @@ dapui.setup {
   },
 }
 
--- Change breakpoint icons
--- vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
--- vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
--- local breakpoint_icons = vim.g.have_nerd_font
---     and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
---   or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
--- for type, icon in pairs(breakpoint_icons) do
---   local tp = 'Dap' .. type
---   local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
---   vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
--- end
+-- Debug signs shown in the sign column while using nvim-dap.
+local function setup_dap_signs()
+  vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#d06f79' })
+  vim.api.nvim_set_hl(0, 'DapStopped', { fg = '#00d75f' })
+  vim.api.nvim_set_hl(0, 'DapBreakpointCondition', { fg = '#ffcc00' })
+  vim.api.nvim_set_hl(0, 'DapLogPoint', { fg = '#61afef' })
+  vim.api.nvim_set_hl(0, 'DapBreakpointRejected', { fg = '#ff8800' })
+  vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = '#1f3d2b' })
+
+  vim.fn.sign_define('DapBreakpoint', { text = '●', texthl = 'DapBreakpoint', numhl = 'DapBreakpoint' })
+  vim.fn.sign_define('DapStopped', { text = '➜', texthl = 'DapStopped', numhl = 'DapStopped', linehl = 'DapStoppedLine' })
+  vim.fn.sign_define('DapBreakpointCondition', { text = '◆', texthl = 'DapBreakpointCondition', numhl = 'DapBreakpointCondition' })
+  vim.fn.sign_define('DapLogPoint', { text = '◆', texthl = 'DapLogPoint', numhl = 'DapLogPoint' })
+  vim.fn.sign_define('DapBreakpointRejected', { text = '✖', texthl = 'DapBreakpointRejected', numhl = 'DapBreakpointRejected' })
+end
+
+setup_dap_signs()
+vim.api.nvim_create_autocmd('ColorScheme', { callback = setup_dap_signs })
 
 dap.listeners.after.event_initialized['dapui_config'] = dapui.open
 dap.listeners.before.event_terminated['dapui_config'] = dapui.close
