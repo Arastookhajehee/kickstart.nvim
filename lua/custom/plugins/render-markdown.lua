@@ -22,53 +22,53 @@ local function set_markdown_render_highlights()
     table_line = 0x6f737c,
   }
 
-  local heading_groups = {
-    { 'RenderMarkdownH1', colors.h1 },
-    { 'RenderMarkdownH2', colors.h2 },
-    { 'RenderMarkdownH3', colors.h3 },
-    { 'RenderMarkdownH4', colors.h4 },
-    { 'RenderMarkdownH5', colors.h5 },
-    { 'RenderMarkdownH6', colors.h6 },
-    { 'RenderMarkdownH1Bg', colors.h1 },
-    { 'RenderMarkdownH2Bg', colors.h2 },
-    { 'RenderMarkdownH3Bg', colors.h3 },
-    { 'RenderMarkdownH4Bg', colors.h4 },
-    { 'RenderMarkdownH5Bg', colors.h5 },
-    { 'RenderMarkdownH6Bg', colors.h6 },
-    { '@markup.heading.1', colors.h1 },
-    { '@markup.heading.2', colors.h2 },
-    { '@markup.heading.3', colors.h3 },
-    { '@markup.heading.4', colors.h4 },
-    { '@markup.heading.5', colors.h5 },
-    { '@markup.heading.6', colors.h6 },
-    { '@markup.heading.1.markdown', colors.h1 },
-    { '@markup.heading.2.markdown', colors.h2 },
-    { '@markup.heading.3.markdown', colors.h3 },
-    { '@markup.heading.4.markdown', colors.h4 },
-    { '@markup.heading.5.markdown', colors.h5 },
-    { '@markup.heading.6.markdown', colors.h6 },
-    { '@text.title.1', colors.h1 },
-    { '@text.title.2', colors.h2 },
-    { '@text.title.3', colors.h3 },
-    { '@text.title.4', colors.h4 },
-    { '@text.title.5', colors.h5 },
-    { '@text.title.6', colors.h6 },
-    { '@text.title.1.markdown', colors.h1 },
-    { '@text.title.2.markdown', colors.h2 },
-    { '@text.title.3.markdown', colors.h3 },
-    { '@text.title.4.markdown', colors.h4 },
-    { '@text.title.5.markdown', colors.h5 },
-    { '@text.title.6.markdown', colors.h6 },
-  }
+  -- local heading_groups = {
+    -- { 'RenderMarkdownH1', colors.h1 },
+    -- { 'RenderMarkdownH2', colors.h2 },
+    -- { 'RenderMarkdownH3', colors.h3 },
+    -- { 'RenderMarkdownH4', colors.h4 },
+    -- { 'RenderMarkdownH5', colors.h5 },
+    -- { 'RenderMarkdownH6', colors.h6 },
+    -- { 'RenderMarkdownH1Bg', colors.h1 },
+    -- { 'RenderMarkdownH2Bg', colors.h2 },
+    -- { 'RenderMarkdownH3Bg', colors.h3 },
+    -- { 'RenderMarkdownH4Bg', colors.h4 },
+    -- { 'RenderMarkdownH5Bg', colors.h5 },
+    -- { 'RenderMarkdownH6Bg', colors.h6 },
+    -- { '@markup.heading.1', colors.h1 },
+    -- { '@markup.heading.2', colors.h2 },
+    -- { '@markup.heading.3', colors.h3 },
+    -- { '@markup.heading.4', colors.h4 },
+    -- { '@markup.heading.5', colors.h5 },
+    -- { '@markup.heading.6', colors.h6 },
+    -- { '@markup.heading.1.markdown', colors.h1 },
+    -- { '@markup.heading.2.markdown', colors.h2 },
+    -- { '@markup.heading.3.markdown', colors.h3 },
+    -- { '@markup.heading.4.markdown', colors.h4 },
+    -- { '@markup.heading.5.markdown', colors.h5 },
+    -- { '@markup.heading.6.markdown', colors.h6 },
+    -- { '@text.title.1', colors.h1 },
+    -- { '@text.title.2', colors.h2 },
+    -- { '@text.title.3', colors.h3 },
+    -- { '@text.title.4', colors.h4 },
+    -- { '@text.title.5', colors.h5 },
+    -- { '@text.title.6', colors.h6 },
+    -- { '@text.title.1.markdown', colors.h1 },
+    -- { '@text.title.2.markdown', colors.h2 },
+    -- { '@text.title.3.markdown', colors.h3 },
+    -- { '@text.title.4.markdown', colors.h4 },
+    -- { '@text.title.5.markdown', colors.h5 },
+    -- { '@text.title.6.markdown', colors.h6 },
+  -- }
 
   vim.api.nvim_set_hl(0, '@markup.heading', { fg = fg, bg = bg, bold = true })
   vim.api.nvim_set_hl(0, '@markup.heading.markdown', { fg = fg, bg = bg, bold = true })
   vim.api.nvim_set_hl(0, '@text.title', { fg = fg, bg = bg, bold = true })
   vim.api.nvim_set_hl(0, '@text.title.markdown', { fg = fg, bg = bg, bold = true })
 
-  for _, group in ipairs(heading_groups) do
-    vim.api.nvim_set_hl(0, group[1], { fg = group[2], bg = bg, bold = true })
-  end
+  -- for _, group in ipairs(heading_groups) do
+  --   vim.api.nvim_set_hl(0, group[1], { fg = group[2], bg = bg, bold = true })
+  -- end
 
   vim.api.nvim_set_hl(0, 'RenderMarkdownBullet', { fg = colors.bullet })
   vim.api.nvim_set_hl(0, 'RenderMarkdownLink', { fg = colors.link, underline = true })
