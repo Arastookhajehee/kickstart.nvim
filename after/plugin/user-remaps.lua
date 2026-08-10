@@ -76,22 +76,22 @@ vim.filetype.add {
   },
 }
 
-map({ 'n', 'v' }, 'y', '"+y', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'y', '"+y', { noremap = true, silent = true })
 map('n', 'Y', '"+yy', { noremap = true, silent = true })
-map({ 'n', 'v' }, 'd', '"_d', { noremap = true, silent = true })
-map({ 'n', 'v' }, 'c', '"_c', { noremap = true, silent = true })
-map({ 'n', 'v' }, 'x', '"_x', { noremap = true, silent = true })
-map({ 'n', 'v' }, 'D', '"_D', { noremap = true, silent = true })
-map({ 'n', 'v' }, 'C', '"_C', { noremap = true, silent = true })
-map({ 'n', 'v' }, 's', '"_s', { noremap = true, silent = true })
-map({ 'n', 'v' }, 'S', '"_S', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'd', '"_d', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'c', '"_c', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'x', '"_x', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'D', '"_D', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'C', '"_C', { noremap = true, silent = true })
+map({ 'n', 'x' }, 's', '"_s', { noremap = true, silent = true })
+map({ 'n', 'x' }, 'S', '"_S', { noremap = true, silent = true })
 map('n', 'X', '"+x', { noremap = true, silent = true })
-map('v', 'X', '"+d', { noremap = true, silent = true })
-map('v', 'p', '"_dP', { noremap = true, silent = true })
-map('v', 'P', '"_dP', { noremap = true, silent = true })
+map('x', 'X', '"+d', { noremap = true, silent = true })
+map('x', 'p', '"_dP', { noremap = true, silent = true })
+map('x', 'P', '"_dP', { noremap = true, silent = true })
 
-map('v', 'J', ":m '>+1<CR>gv=gv")
-map('v', 'K', ":m '<-2<CR>gv=gv")
+map('x', 'J', ":m '>+1<CR>gv=gv")
+map('x', 'K', ":m '<-2<CR>gv=gv")
 map('n', 'J', 'mzJ`z')
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
@@ -102,14 +102,22 @@ map('n', 'N', 'Nzzzv')
 map('n', '<leader>zig', '<cmd>LspRestart<CR>')
 
 -- line home and end
-map({ 'n', 'v', 'o' }, 'H', '0', { noremap = true, silent = true })
-map({ 'n', 'v', 'o' }, 'L', '$', { noremap = true, silent = true })
+map({ 'n', 'x', 'o' }, 'H', '0', { noremap = true, silent = true })
+map({ 'n', 'x', 'o' }, 'L', '$', { noremap = true, silent = true })
 
 map('x', '<C-_>', 'gc', { remap = true, desc = 'Toggle comment selection' })
 map('x', '<C-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
 map('x', '<C-S-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
 
-map('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and '<C-y>' or '<Tab>' end, { expr = true })
+map('i', '<Tab>', function()
+  local ok, ls = pcall(require, 'luasnip')
+  if ok and ls.locally_jumpable(1) then
+    ls.jump(1)
+    return ''
+  end
+
+  return vim.fn.pumvisible() == 1 and '<C-y>' or '<Tab>'
+end, { expr = true, silent = true })
 map('i', 'ii', '<Esc>')
 map('t', 'ii', '<Esc><Esc>')
 
