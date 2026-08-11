@@ -14,7 +14,7 @@ local opencode_cmd = 'opencode --port'
 ---@type snacks.terminal.Opts
 local snacks_terminal_opts = {
   win = {
-    position = 'right',
+    position = 'bottom',
     enter = false,
   },
 }
