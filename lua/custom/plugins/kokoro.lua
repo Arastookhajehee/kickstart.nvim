@@ -1,3 +1,5 @@
+if vim.env.NVIM_OS_TYPE == 'WIN' then return end
+
 vim.pack.add({
   "https://github.com/cskeeters/kokoro.nvim",
 })

@@ -1,8 +1,6 @@
-local function gh(repo) return 'https://github.com/' .. repo end
-
 vim.pack.add {
-  gh 'brianhuster/live-preview.nvim',
-  gh 'nvim-telescope/telescope.nvim',
+  'https://github.com/brianhuster/live-preview.nvim',
+  'https://github.com/nvim-telescope/telescope.nvim',
 }
 
 require('livepreview.config').set {

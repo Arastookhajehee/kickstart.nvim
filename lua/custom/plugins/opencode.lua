@@ -10,7 +10,7 @@ require('snacks').setup {
   terminal = {},
 }
 
-local opencode_cmd = 'opencode --port'
+local is_windows = vim.env.NVIM_OS_TYPE == 'WIN'
 ---@type snacks.terminal.Opts
 local snacks_terminal_opts = {
   win = {
@@ -19,11 +19,20 @@ local snacks_terminal_opts = {
   },
 }
 
+local opencode_cmd = { 'opencode', '--port' }
+local server_opts = {
+  start = function() require('snacks.terminal').open(opencode_cmd, snacks_terminal_opts) end,
+}
+
+if is_windows then
+  local opencode_port = 4096
+  opencode_cmd = { 'cmd.exe', '/c', 'opencode', '--port', tostring(opencode_port) }
+  server_opts.url = 'http://127.0.0.1:' .. opencode_port
+end
+
 ---@type opencode.Opts
 vim.g.opencode_opts = {
-  server = {
-    start = function() require('snacks.terminal').open(opencode_cmd, snacks_terminal_opts) end,
-  },
+  server = server_opts,
   select = {
     prompts = {
       tutor = '/tutor Use the tutor skill. The user has edited or commented on the active tutorial markdown file and wants it reviewed. Find the tutorial/instruction sheet for this project, read its latest contents, and append the next tutor update to the end of that same file. Preserve prior content and follow the tutor skill rules \n</system-reminder>',

@@ -1,3 +1,5 @@
+if vim.env.NVIM_OS_TYPE == 'WIN' then return end
+
 vim.pack.add({
   "https://github.com/3rd/image.nvim",
   "https://github.com/3rd/diagram.nvim",

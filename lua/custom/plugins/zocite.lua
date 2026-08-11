@@ -6,10 +6,8 @@ vim.pack.add({
 
 require('nvim-treesitter').setup {}
 
-local user = os.getenv 'WIN_USERNAME'
-if not user or user == '' then return end
-
-local path = '/mnt/c/Users/' .. user .. '/Zotero/zotero.sqlite'
+local path = vim.env.NVIM_ZOTERO_DB_PATH
+if not path or path == '' then return end
 
 require('zotcite').setup {
   zotero_sqlite_path = path,

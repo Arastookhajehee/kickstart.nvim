@@ -1,4 +1,4 @@
-local os_type = vim.env.OS_TYPE
+local os_type = vim.env.NVIM_OS_TYPE
 
 vim.pack.add({
   "https://github.com/EdenEast/nightfox.nvim",
