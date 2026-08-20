@@ -164,3 +164,5 @@ map('n', '<leader>M', function() set_mark(true) end, { desc = 'Set global mark' 
 
 map('n', "<leader>'", with_telescope_builtin('marks', function() vim.cmd 'marks' end), { desc = 'List marks' })
 map('n', '<leader>"', with_telescope_builtin('marks', function() vim.cmd 'marks' end), { desc = 'List all marks' })
+
+map('n', '<leader>T', '<cmd>terminal<CR>', { desc = 'Open terminal' })
