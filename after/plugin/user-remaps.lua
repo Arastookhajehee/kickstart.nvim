@@ -14,9 +14,7 @@ local function vscode_like_find_in_buffer() vim.api.nvim_feedkeys('/', 'n', fals
 local function with_telescope_builtin(name, fallback)
   return function(...)
     local ok, builtin = pcall(require, 'telescope.builtin')
-    if ok and builtin[name] then
-      return builtin[name](...)
-    end
+    if ok and builtin[name] then return builtin[name](...) end
     if fallback then return fallback(...) end
   end
 end
@@ -62,8 +60,6 @@ vim.opt.signcolumn = 'yes'
 vim.opt.isfname:append '@-@'
 vim.opt.colorcolumn = '100,120'
 vim.opt.clipboard = 'unnamedplus'
-vim.opt.spell = true
-vim.opt.spelllang = 'en_us'
 
 vim.filetype.add {
   pattern = {
