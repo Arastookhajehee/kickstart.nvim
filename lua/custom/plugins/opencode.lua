@@ -19,15 +19,18 @@ local snacks_terminal_opts = {
   },
 }
 
-local opencode_cmd = { 'opencode', '--port' }
+local opencode_port = vim.env.OPENCODE_PORT or '40801'
+local opencode_url = vim.env.OPENCODE_URL or ('http://localhost:' .. opencode_port)
+local opencode_cmd = { 'opencode' }
+local opencode_attach_cmd = { 'opencode', 'attach', opencode_url }
 local server_opts = {
+  url = opencode_url,
   start = function() require('snacks.terminal').open(opencode_cmd, snacks_terminal_opts) end,
 }
 
 if is_windows then
-  local opencode_port = 4096
-  opencode_cmd = { 'cmd.exe', '/c', 'opencode', '--port', tostring(opencode_port) }
-  server_opts.url = 'http://127.0.0.1:' .. opencode_port
+  opencode_cmd = { 'cmd.exe', '/c', 'opencode' }
+  opencode_attach_cmd = { 'cmd.exe', '/c', 'opencode', 'attach', opencode_url }
 end
 
 ---@type opencode.Opts
@@ -49,3 +52,4 @@ vim.keymap.set({ 'n' }, 'goo', function() return require('opencode').operator '@
 vim.keymap.set({ 'n' }, '<S-C-k>', function() require('opencode').command 'session.half.page.up' end, { desc = 'Scroll OpenCode up' })
 vim.keymap.set({ 'n' }, '<S-C-j>', function() require('opencode').command 'session.half.page.down' end, { desc = 'Scroll OpenCode down' })
 vim.keymap.set('n', '<leader>.', function() require('snacks.terminal').toggle(opencode_cmd, snacks_terminal_opts) end, { desc = 'Toggle OpenCode' })
+vim.keymap.set('n', '<leader>A', function() require('snacks.terminal').toggle(opencode_attach_cmd, snacks_terminal_opts) end, { desc = 'Attach OpenCode' })
