@@ -134,6 +134,7 @@ end, { desc = 'Go to definition' })
 
 map('n', '<leader>D', with_telescope_builtin('lsp_references', vim.lsp.buf.references), { desc = 'Go to references' })
 map('n', '<leader>R', with_telescope_builtin('lsp_rename', vim.lsp.buf.rename), { desc = 'Rename the symbol under cursor' })
+map('n', '<leader>do', function() vim.diagnostic.open_float() end, { desc = 'Open Diagnostics Floating Dialouge' })
 
 map('n', '<leader>h', function() vim.lsp.buf.hover() end, { desc = 'Hover docs' })
 
