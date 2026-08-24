@@ -44,7 +44,7 @@ require("image").setup({
   processor = "magick_cli",
   kitty_method = "stream",
   scale_factor = 1,
-  max_width_window_percentage = 100,
+  max_width_window_percentage = 85,
   max_height_window_percentage = 50,
 
   integrations = {

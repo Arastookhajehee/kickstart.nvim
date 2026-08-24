@@ -24,6 +24,6 @@ require("image").setup({
   },
 
   max_height_window_percentage = 75,
-  max_width_window_percentage = 100,
+  max_width_window_percentage = 85,
   hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" },
 })
