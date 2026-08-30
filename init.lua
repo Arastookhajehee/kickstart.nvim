@@ -499,12 +499,14 @@ do
   vim.pack.add(telescope_plugins)
 
   -- See `:help telescope` and `:help telescope.setup()`
+  local layout = vim.env.NVIM_LAYOUT
+  local layout_dir = layout == 'HORIZONTAL' and 'horizontal' or 'vertical'
   require('telescope').setup {
     -- You can put your default mappings / updates / etc. in here
     --  All the info you're looking for is in `:help telescope.setup()`
     --
     defaults = {
-      layout_strategy = 'vertical',
+      layout_strategy = layout_dir,
       layout_config = {
         vertical = { preview_height = 0.5 },
       }, --   mappings = {
