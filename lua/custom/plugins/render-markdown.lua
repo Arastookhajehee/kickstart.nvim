@@ -94,6 +94,11 @@ require('render-markdown').setup {
     conceal_delimiters = false,
     border = 'thin',
   },
+  html = {
+    comment = {
+      conceal = false,
+    },
+  },
   heading = {
     icons = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
     position = 'inline',
@@ -101,14 +106,14 @@ require('render-markdown').setup {
     left_pad = 0,
     right_pad = 0,
     border = false,
-    backgrounds = {
-      'RenderMarkdownH1Bg',
-      'RenderMarkdownH2Bg',
-      'RenderMarkdownH3Bg',
-      'RenderMarkdownH4Bg',
-      'RenderMarkdownH5Bg',
-      'RenderMarkdownH6Bg',
-    },
+    -- backgrounds = {
+    --   'RenderMarkdownH1Bg',
+    --   'RenderMarkdownH2Bg',
+    --   'RenderMarkdownH3Bg',
+    --   'RenderMarkdownH4Bg',
+    --   'RenderMarkdownH5Bg',
+    --   'RenderMarkdownH6Bg',
+    -- },
     foregrounds = {
       'RenderMarkdownH1',
       'RenderMarkdownH2',
