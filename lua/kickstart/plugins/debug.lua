@@ -6,16 +6,6 @@
 -- be extended to other languages as well. That's why it's called
 -- kickstart.nvim and not kitchen-sink.nvim ;)
 
-vim.pack.add {
-  'https://github.com/mfussenegger/nvim-dap',
-  'https://github.com/rcarriga/nvim-dap-ui',
-  'https://github.com/nvim-neotest/nvim-nio',
-  'https://github.com/mason-org/mason.nvim',
-  'https://github.com/jay-babu/mason-nvim-dap.nvim',
-  'https://github.com/ramboe/ramboe-dotnet-utils',
-  -- 'https://github.com/leoluz/nvim-dap-go',
-}
-
 -- Basic debugging keymaps, feel free to change to your liking!
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
 vim.keymap.set('n', '<F8>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
@@ -56,7 +46,8 @@ require('mason-nvim-dap').setup {
   },
 }
 
-local netcoredbg_path = vim.fn.stdpath 'data' .. '/mason/packages/netcoredbg/netcoredbg'
+local netcoredbg_path = vim.fn.exepath 'netcoredbg'
+if netcoredbg_path == '' then netcoredbg_path = 'netcoredbg' end
 local netcoredbg_adapter = {
   type = 'executable',
   command = netcoredbg_path,
@@ -82,12 +73,14 @@ local function windows_source_file_map()
 end
 
 local function get_windows_processes()
-  local result = vim.system({
-    'powershell.exe',
-    '-NoProfile',
-    '-Command',
-    [[Get-Process | Where-Object { $_.Path } | Select-Object Id,ProcessName,Path | Sort-Object ProcessName,Id | ConvertTo-Json -Compress]],
-  }, { text = true }):wait()
+  local result = vim
+    .system({
+      'powershell.exe',
+      '-NoProfile',
+      '-Command',
+      [[Get-Process | Where-Object { $_.Path } | Select-Object Id,ProcessName,Path | Sort-Object ProcessName,Id | ConvertTo-Json -Compress]],
+    }, { text = true })
+    :wait()
 
   if result.code ~= 0 or result.stdout == '' then return nil end
 
@@ -108,9 +101,7 @@ local function pick_windows_process()
   return coroutine.create(function(dap_run_co)
     vim.ui.select(processes, {
       prompt = 'Attach to Windows process',
-      format_item = function(process)
-        return ('%s  %s  %s'):format(process.Id, process.ProcessName, process.Path or '')
-      end,
+      format_item = function(process) return ('%s  %s  %s'):format(process.Id, process.ProcessName, process.Path or '') end,
     }, function(choice) coroutine.resume(dap_run_co, choice and choice.Id or dap_abort) end)
   end)
 end
@@ -123,7 +114,7 @@ if windows_netcoredbg_path and vim.fn.executable(windows_netcoredbg_path) == 1 t
   }
 end
 
-dap.configurations.cs = {
+local cs_configurations = {
   {
     type = 'coreclr',
     name = 'Launch .NET DLL',
@@ -136,7 +127,10 @@ dap.configurations.cs = {
     request = 'attach',
     processId = function() return require('dap.utils').pick_process() end,
   },
-  {
+}
+
+if dap.adapters.coreclr_windows then
+  table.insert(cs_configurations, {
     type = 'coreclr_windows',
     name = 'Attach to Windows .NET process',
     request = 'attach',
@@ -145,8 +139,10 @@ dap.configurations.cs = {
     requireExactSource = false,
     suppressJITOptimizations = true,
     sourceFileMap = windows_source_file_map,
-  },
-}
+  })
+end
+
+dap.configurations.cs = cs_configurations
 
 -- Dap UI setup
 -- For more information, see |:help nvim-dap-ui|

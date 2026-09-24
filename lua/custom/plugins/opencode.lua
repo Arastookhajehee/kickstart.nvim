@@ -1,15 +1,3 @@
-vim.pack.add {
-  'https://github.com/folke/snacks.nvim',
-  {
-    src = 'https://github.com/nickjvandyke/opencode.nvim',
-    version = vim.version.range '*', -- Latest stable release
-  },
-}
-
-require('snacks').setup {
-  terminal = {},
-}
-
 local is_windows = vim.fn.has 'win32' == 1
 ---@type snacks.terminal.Opts
 local snacks_terminal_opts = {

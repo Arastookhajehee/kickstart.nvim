@@ -1,5 +1,3 @@
-vim.pack.add { 'https://github.com/monaqa/dial.nvim' }
-
 local map = require 'dial.map'
 
 vim.keymap.set('n', '+', map.inc_normal())

@@ -1,8 +1,3 @@
-vim.pack.add {
-  { src = 'https://github.com/cajames/copy-reference.nvim' },
-  { src = 'https://github.com/h3pei/copy-file-path.nvim' },
-}
-
 require('copy-reference').setup {
   register = '+',
   use_git_root = true,

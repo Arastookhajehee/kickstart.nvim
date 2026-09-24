@@ -1,11 +1,5 @@
-vim.pack.add {
-  'https://github.com/benfowler/telescope-luasnip.nvim',
-  'https://github.com/rafamadriz/friendly-snippets',
-}
-
-require('luasnip.loaders.from_vscode').lazy_load()
-
 local ls = require 'luasnip'
+
 ls.add_snippets('markdown', {
   ls.parser.parse_snippet(
     { trig = 'mermaid-flowchart', name = 'Mermaid flowchart', dscr = 'Mermaid flowchart diagram template' },
@@ -53,8 +47,3 @@ $0
 ```]=]
   ),
 })
-
-local ok, telescope = pcall(require, 'telescope')
-if ok then telescope.load_extension 'luasnip' end
-
-vim.keymap.set('n', '<leader>ls', function() require('telescope').extensions.luasnip.luasnip {} end, { desc = '[L]uaSnip [S]nippets' })

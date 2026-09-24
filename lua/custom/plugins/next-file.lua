@@ -1,7 +1,3 @@
-vim.pack.add {
-  { src = 'https://github.com/marwndev/nextfile.nvim' },
-}
-
 local nf = require 'nextfile'
 nf.setup()
 

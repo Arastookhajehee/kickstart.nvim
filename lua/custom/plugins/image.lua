@@ -1,0 +1,22 @@
+require('image').setup {
+  backend = 'kitty',
+  processor = 'magick_cli',
+  kitty_method = 'stream',
+  scale_factor = 1,
+  max_width_window_percentage = 100,
+  max_height_window_percentage = 50,
+  integrations = {
+    markdown = {
+      enabled = true,
+      clear_in_insert_mode = false,
+      download_remote_images = true,
+      only_render_image_at_cursor = false,
+      filetypes = { 'markdown', 'vimwiki' },
+    },
+    neorg = { enabled = true },
+    typst = { enabled = true },
+    html = { enabled = false },
+    css = { enabled = false },
+  },
+  hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' },
+}

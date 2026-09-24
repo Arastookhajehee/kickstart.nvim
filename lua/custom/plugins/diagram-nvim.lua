@@ -1,13 +1,6 @@
-if vim.env.NVIM_OS_TYPE == 'WIN' then return end
+local mermaid_css = vim.fn.stdpath 'cache' .. '/diagram-mermaid.css'
 
-vim.pack.add({
-  "https://github.com/3rd/image.nvim",
-  "https://github.com/3rd/diagram.nvim",
-})
-
-local mermaid_css = vim.fn.stdpath("cache") .. "/diagram-mermaid.css"
-
-vim.fn.writefile({
+local css = {
   [[text,]],
   [[.nodeLabel,]],
   [[.edgeLabel {]],
@@ -37,48 +30,28 @@ vim.fn.writefile({
   [[  rx: 10px !important;]],
   [[  ry: 10px !important;]],
   [[}]],
-}, mermaid_css)
+}
+local existing = vim.fn.filereadable(mermaid_css) == 1 and vim.fn.readfile(mermaid_css) or {}
+if not vim.deep_equal(existing, css) then vim.fn.writefile(css, mermaid_css) end
 
-require("image").setup({
-  backend = "kitty",
-  processor = "magick_cli",
-  kitty_method = "stream",
-  scale_factor = 1,
-  max_width_window_percentage = 100,
-  max_height_window_percentage = 50,
-
+require('diagram').setup {
   integrations = {
-    markdown = {
-      enabled = true,
-      clear_in_insert_mode = false,
-      download_remote_images = true,
-      only_render_image_at_cursor = false,
-      filetypes = { "markdown", "vimwiki" },
-    },
-    neorg = { enabled = true },
-    typst = { enabled = true },
-    html = { enabled = false },
-    css = { enabled = false },
-  },
-
-  hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" },
-})
-
-require("diagram").setup({
-  integrations = {
-    require("diagram.integrations.markdown"),
-    require("diagram.integrations.neorg"),
+    require 'diagram.integrations.markdown',
+    require 'diagram.integrations.neorg',
   },
 
   renderer_options = {
     mermaid = {
-      theme = "dark",
-      background = "transparent",
+      theme = 'dark',
+      background = 'transparent',
 
       cli_args = {
-        "--width", "600",
-        "--scale", "4",
-        "--cssFile", mermaid_css,
+        '--width',
+        '600',
+        '--scale',
+        '4',
+        '--cssFile',
+        mermaid_css,
       },
 
       config = {
@@ -90,4 +63,4 @@ require("diagram").setup({
       },
     },
   },
-})
+}
