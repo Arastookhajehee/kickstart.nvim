@@ -495,7 +495,7 @@ end
 function mark_align.setup(opts) config = vim.tbl_extend('force', config, opts or {}) end
 
 mark_align.setup {
-  width = 120,
+  width = 75,
 }
 
 vim.keymap.set('n', 'qq', mark_align.format_current_paragraph, { noremap = true, silent = true })
