@@ -4,7 +4,16 @@ end
 
 return {
   { 'windwp/nvim-autopairs', event = 'InsertEnter', opts = {} },
-  { 'kylechui/nvim-surround', version = '4.*', event = 'VeryLazy', opts = {} },
+  {
+    'kylechui/nvim-surround',
+    version = '4.*',
+    event = 'VeryLazy',
+    keys = {
+      { '<leader>S', '<Plug>(nvim-surround-normal)', mode = 'n', desc = 'Surround with motion' },
+      { '<leader>S', '<Plug>(nvim-surround-visual)', mode = 'x', desc = 'Surround selection' },
+    },
+    opts = {},
+  },
   {
     'monaqa/dial.nvim',
     keys = {

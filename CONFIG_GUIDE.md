@@ -338,14 +338,6 @@ detection does not lengthen the critical startup path.
 | Normal `J` | Join while preserving cursor position |
 | `U` | Redo |
 
-Normal and visual `"` are currently mapped to paragraph-forward plus recenter.
-That means the usual register-prefix behavior through `"` is unavailable. If
-that was accidental, remove this line from `lua/config/keymaps.lua`:
-
-```lua
-map({ 'n', 'x' }, '"', '}zz')
-```
-
 ### Comments
 
 Mini Comment provides `gc`-style commenting. Visual mode also exposes:
@@ -389,10 +381,17 @@ are `aa` and `ii`, and it searches up to 500 lines.
 | Example | Result |
 | --- | --- |
 | `ysiw"` | Surround the current word with quotes |
+| `<leader>Siw"` | Surround the current word with quotes (`ys` alias) |
 | `yss)` | Surround the current line with parentheses |
 | `ds"` | Delete surrounding quotes |
 | `cs"'` | Change double quotes to single quotes |
-| Visual `S)` | Surround the visual selection |
+| Visual `<leader>S)` | Surround the visual selection |
+
+Normal-mode `ys` remains the plugin default. `<leader>S` is an additional,
+more discoverable alias: follow it with a motion or text object and then the
+surrounding character. In visual mode, select text, press `<leader>S`, and then
+press the surrounding character. The plugin's default visual `S` also remains
+available.
 
 Use `:help nvim-surround` for tags, function calls, aliases, and custom
 surrounds.
@@ -1648,6 +1647,8 @@ they can remain as a rollback cache until you are confident in the migration.
 | --- | --- |
 | `+/-` | Dial increment/decrement |
 | `qq` | Format paragraph/selection |
+| Normal `<leader>S` | Add surroundings using a motion or text object |
+| Visual `<leader>S` | Surround the selection |
 | Up/Down | Add multicursor |
 | `<leader>mn/ms` | Add/skip next match |
 | `<leader>N/P` | Next/previous file |
