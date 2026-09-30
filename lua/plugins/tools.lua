@@ -68,7 +68,18 @@ return {
   },
   {
     'folke/flash.nvim',
-    opts = {},
+    opts = {
+      highlight = {
+        backdrop = false,
+      },
+      mode = {
+        char = {
+          highlight = {
+            backdrop = false,
+          },
+        },
+      },
+    },
     keys = {
       { 'gs', function() require('flash').jump() end, mode = { 'n', 'x', 'o' }, desc = 'Flash jump' },
       { 'gS', function() require('flash').treesitter() end, mode = { 'n', 'x', 'o' }, desc = 'Flash Treesitter' },
