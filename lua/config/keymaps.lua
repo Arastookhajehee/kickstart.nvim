@@ -51,7 +51,7 @@ map({ 'n', 'x' }, '{', '{zz')
 map({ 'n', 'x' }, '}', '}zz')
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
-map({ 'n', 'x', 'o' }, 'H', '0', { noremap = true, silent = true })
+map({ 'n', 'x', 'o' }, 'H', '^', { noremap = true, silent = true })
 map({ 'n', 'x', 'o' }, 'L', '$', { noremap = true, silent = true })
 
 map('x', '<C-_>', 'gc', { remap = true, desc = 'Toggle comment selection' })
