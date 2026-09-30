@@ -66,7 +66,8 @@ function M.warp()
   local target = current_target(false)
   -- preventing shifting up the cursor to the app header
   -- The shift is to place the cursor on top of the chat in opencode for scrolling
-  local shift_up = target.y < 200 and 0 or 150
+  local y = target and target.y
+  local shift_up = y ~= nil and y < 200 and 0 or 150
   if target then platform.set_cursor_position(target.x, target.y - shift_up) end
 end
 
