@@ -38,7 +38,7 @@ end
 
 local function tracked_mode()
   local mode = vim.api.nvim_get_mode().mode
-  return mode == 'n' or mode == 'v' or mode == 'V' or mode == '\22'
+  return mode == 'n' or mode == 'nt' or mode == 'v' or mode == 'V' or mode == '\22'
 end
 
 local function cursor_cell()
