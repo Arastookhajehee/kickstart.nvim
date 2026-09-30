@@ -65,6 +65,7 @@ return {
       { '<leader>sq', builtin 'quickfix', desc = '[S]earch [Q]uickfix' },
       { '<leader>g', builtin 'live_grep', desc = 'Search text' },
       { '<leader>s', builtin 'lsp_document_symbols', desc = 'Document symbols' },
+      { '<leader>ws', builtin 'lsp_dynamic_workspace_symbols', desc = 'Workspace symbols' },
       { "<leader>'", builtin 'marks', desc = 'List marks' },
       { '<leader>"', builtin 'marks', desc = 'List all marks' },
     },

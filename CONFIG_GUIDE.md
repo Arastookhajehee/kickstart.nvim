@@ -468,6 +468,7 @@ These mappings are installed only in buffers with an attached LSP:
 | `<leader>T` | Type definitions through Telescope |
 | `gO` | Document symbols |
 | `gW` | Workspace symbols |
+| `<leader>ws` | Workspace symbols through Telescope |
 | `grD` | Declaration |
 | `grn` | Rename |
 | `gra` | Code action |
@@ -1616,6 +1617,7 @@ they can remain as a rollback cache until you are confident in the migration.
 | `<leader>T` | Type definition |
 | `grn/gra` | Rename/code action |
 | `gO/gW` | Document/workspace symbols |
+| `<leader>ws` | Workspace symbols |
 | `<leader>h/H` | Hover/code action |
 | `<leader>th` | Inlay hints |
 | `<leader>zd/zD` | Workspace/buffer diagnostics |
