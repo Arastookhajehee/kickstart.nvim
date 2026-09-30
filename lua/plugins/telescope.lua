@@ -58,6 +58,8 @@ return {
         desc = 'Go to definition',
       },
       { '<leader>D', builtin 'lsp_references', desc = 'Go to references' },
+      { '<leader>i', builtin 'lsp_implementations', desc = 'Go to implementation' },
+      { '<leader>T', builtin 'lsp_type_definitions', desc = 'Go to Type Definition' },
       { '<leader>R', vim.lsp.buf.rename, desc = 'Rename symbol' },
       { '<leader>q', builtin 'quickfix', desc = 'Quickfix picker' },
       { '<leader>sq', builtin 'quickfix', desc = '[S]earch [Q]uickfix' },

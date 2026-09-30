@@ -357,7 +357,7 @@ Ctrl-Shift-/
 | Terminal `Esc Esc` | Leave terminal mode |
 | `Ctrl-H/J/K/L` | Move between splits |
 | `<leader>w` | Save |
-| `<leader>T` | Open a terminal |
+| `Ctrl-Backtick` | Open a terminal |
 
 Before writing a normal local file, Neovim automatically creates any missing
 parent directories.
@@ -463,7 +463,9 @@ These mappings are installed only in buffers with an attached LSP:
 | `grd` | Definitions through Telescope |
 | `grr` | References through Telescope |
 | `gri` | Implementations through Telescope |
+| `<leader>i` | Implementations through Telescope |
 | `grt` | Type definitions through Telescope |
+| `<leader>T` | Type definitions through Telescope |
 | `gO` | Document symbols |
 | `gW` | Workspace symbols |
 | `grD` | Declaration |
@@ -1582,7 +1584,7 @@ they can remain as a rollback cache until you are confident in the migration.
 | Mapping | Action |
 | --- | --- |
 | `<leader>w` | Save |
-| `<leader>T` | Terminal |
+| `Ctrl-Backtick` | Terminal |
 | `<leader>f` | Format |
 | `<leader>do` | Diagnostic float |
 | `<leader>id` | Insert JST timestamp |
@@ -1610,6 +1612,8 @@ they can remain as a rollback cache until you are confident in the migration.
 | Mapping | Action |
 | --- | --- |
 | `grd/grr/gri/grt` | Definition/reference/implementation/type |
+| `<leader>i` | Implementation |
+| `<leader>T` | Type definition |
 | `grn/gra` | Rename/code action |
 | `gO/gW` | Document/workspace symbols |
 | `<leader>h/H` | Hover/code action |

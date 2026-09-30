@@ -72,7 +72,7 @@ map('n', '<leader>C', '<cmd>Gitsigns prev_hunk<CR>', { desc = 'Previous git hunk
 map({ 'n', 'i' }, '<leader>id', insert_date_jst, { desc = 'Insert JST date string' })
 map('n', '<leader>m', function() set_mark(false) end, { desc = 'Set local mark' })
 map('n', '<leader>M', function() set_mark(true) end, { desc = 'Set global mark' })
-map('n', '<leader>T', '<cmd>terminal<CR>', { desc = 'Open terminal' })
+map('n', '<C-`>', '<cmd>terminal<CR>', { desc = 'Open terminal' })
 
 require 'custom.plugins.mark_align'
 require 'custom.plugins.visual-studio-navigation'
