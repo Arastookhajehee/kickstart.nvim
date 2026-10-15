@@ -1,12 +1,4 @@
--- debug.lua
---
--- Shows how to use the DAP plugin to debug your code.
---
--- Primarily focused on configuring the debugger for Go, but can
--- be extended to other languages as well. That's why it's called
--- kickstart.nvim and not kitchen-sink.nvim ;)
-
--- Basic debugging keymaps, feel free to change to your liking!
+-- .NET debugging and DAP UI.
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
 vim.keymap.set('n', '<F8>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
 vim.keymap.set('n', '<F1>', function() require('dap').step_into() end, { desc = 'Debug: Step Into' })
@@ -29,21 +21,9 @@ local dap = require 'dap'
 local dapui = require 'dapui'
 
 require('mason-nvim-dap').setup {
-  -- Makes a best effort to setup the various debuggers with
-  -- reasonable debug configurations
   automatic_installation = true,
-
-  -- You can provide additional configuration to the handlers,
-  -- see mason-nvim-dap README for more information
   handlers = {},
-
-  -- You'll need to check that you have the required things installed
-  -- online, please don't ask me how to install them :)
-  ensure_installed = {
-    -- Update this to ensure that you have the debuggers for the langs you want
-    -- 'delve',
-    'netcoredbg',
-  },
+  ensure_installed = { 'netcoredbg' },
 }
 
 local netcoredbg_path = vim.fn.exepath 'netcoredbg'
@@ -57,7 +37,16 @@ local netcoredbg_adapter = {
 dap.adapters.netcoredbg = netcoredbg_adapter
 dap.adapters.coreclr = netcoredbg_adapter
 
-local windows_netcoredbg_path = vim.env.WIN_USERNAME and ('/mnt/c/Users/' .. vim.env.WIN_USERNAME .. '/scoop/apps/netcoredbg/3.2.0-1092/netcoredbg.exe')
+local function find_windows_netcoredbg()
+  local candidates = { vim.env.NVIM_WINDOWS_NETCOREDBG }
+  if vim.env.WIN_USERNAME then table.insert(candidates, '/mnt/c/Users/' .. vim.env.WIN_USERNAME .. '/scoop/apps/netcoredbg/current/netcoredbg.exe') end
+
+  for _, path in ipairs(candidates) do
+    if path and path ~= '' and vim.fn.executable(path) == 1 then return path end
+  end
+end
+
+local windows_netcoredbg_path = find_windows_netcoredbg()
 
 local function wslpath_to_windows(path)
   local result = vim.system({ 'wslpath', '-w', path }, { text = true }):wait()
@@ -144,13 +133,8 @@ end
 
 dap.configurations.cs = cs_configurations
 
--- Dap UI setup
--- For more information, see |:help nvim-dap-ui|
 ---@diagnostic disable-next-line: missing-fields
 dapui.setup {
-  -- Set icons to characters that are more likely to work in every terminal.
-  --    Feel free to remove or use ones that you like more! :)
-  --    Don't feel like these are good choices.
   icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
   ---@diagnostic disable-next-line: missing-fields
   controls = {
@@ -190,12 +174,3 @@ vim.api.nvim_create_autocmd('ColorScheme', { callback = setup_dap_signs })
 dap.listeners.after.event_initialized['dapui_config'] = dapui.open
 dap.listeners.before.event_terminated['dapui_config'] = dapui.close
 dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
--- Install golang specific config
--- require('dap-go').setup {
---   delve = {
---     -- On Windows delve must be run attached or it crashes.
---     -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
---     detached = vim.fn.has 'win32' == 0,
---   },
--- }

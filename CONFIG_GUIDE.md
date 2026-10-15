@@ -836,9 +836,9 @@ The configured C# launch modes are:
 - Attach to a local .NET process
 - Attach from WSL to a Windows .NET process when the optional adapter exists
 
-The WSL-to-Windows path requires `WIN_USERNAME`, `wslpath`, PowerShell, and the
-hard-coded Scoop `netcoredbg` location in `lua/kickstart/plugins/debug.lua`.
-Adjust that path if your version or installation method differs.
+The WSL-to-Windows path requires `wslpath`, PowerShell, and a Windows
+`netcoredbg.exe`. Set `NVIM_WINDOWS_NETCOREDBG` explicitly, or set
+`WIN_USERNAME` to use Scoop's `apps/netcoredbg/current/netcoredbg.exe` path.
 
 ### Neotest
 
@@ -1096,6 +1096,18 @@ directly.
 
 The plugin loads only when one of these commands is used.
 
+### Manual cursor positioning
+
+The Windows-only local cursor-warp plugin has no automatic movement triggers.
+It loads only when one of these commands is used:
+
+| Command | Action |
+| --- | --- |
+| `:CursorWarpNow` | Move the mouse pointer to Neovim's cursor once |
+| `:CursorWarpCalibrate` | Save an offset from the pointer's current position |
+| `:CursorWarpResetCalibration` | Reset the saved offset |
+| `:CursorWarpStatus` | Report availability and calibration state |
+
 ### Marks
 
 | Mapping | Action |
@@ -1155,8 +1167,7 @@ A safe update workflow is:
 5. Inspect `lazy-lock.json` and commit it if everything works.
 6. Run `:Lazy restore` if an update needs to be rolled back.
 
-The old `vim.pack.update()` workflow and `nvim-pack-lock.json` are no longer the
-source of truth.
+`lazy-lock.json` is the only plugin lockfile used by this configuration.
 
 ## Extending the Configuration
 
@@ -1411,7 +1422,8 @@ Remove or disable the Dracula spec so two eager themes do not compete.
 | `NVIM_LAYOUT` | Telescope layout; `HORIZONTAL` selects horizontal | Vertical |
 | `OPENCODE_PORT` | OpenCode server port | `40801` |
 | `OPENCODE_URL` | OpenCode server URL | Localhost and configured port |
-| `WIN_USERNAME` | WSL-to-Windows .NET attachment path | Feature unavailable |
+| `NVIM_WINDOWS_NETCOREDBG` | WSL path to Windows `netcoredbg.exe` | Scoop discovery |
+| `WIN_USERNAME` | Username used for Scoop debugger discovery from WSL | Feature unavailable |
 | `NVIM_APPNAME` | Select parallel Neovim config/data directories | `nvim` |
 
 ### Baseline executables
@@ -1536,7 +1548,8 @@ disabled on native Windows and require compatible terminal graphics.
 ```
 
 Confirm the .NET project builds and produces a DLL. WSL-to-Windows attachment
-has additional requirements described in the debugging section.
+has additional requirements described in the debugging section. Inspect
+`NVIM_WINDOWS_NETCOREDBG` when the Windows adapter is unavailable.
 
 ### Kokoro keys do nothing
 
@@ -1573,10 +1586,6 @@ When optimizing:
 3. Test first-use latency as well as startup latency.
 4. Avoid moving required setup so late that the first event has already passed.
 5. Profile with both an empty launch and representative Lua, C#, and Markdown files.
-
-The old `vim.pack` package directory may still exist under
-`stdpath('data')/site/pack/core/opt`. Those packages are optional and inactive;
-they can remain as a rollback cache until you are confident in the migration.
 
 ## Key Reference
 

@@ -4,7 +4,6 @@ local platform = require 'cursor-warp.windows'
 local M = {}
 
 local defaults = {
-  enabled = true,
   terminal_only = false,
   window_class = 'CASCADIA_HOSTING_WINDOW_CLASS',
   top_offset = 61,
@@ -15,7 +14,6 @@ local defaults = {
 
 local opts = vim.deepcopy(defaults)
 local calibration = { x = 0, y = 0 }
-local pending = false
 local commands_created = false
 local state_file = vim.fn.stdpath 'state' .. '/cursor-warp.json'
 
@@ -49,58 +47,28 @@ local function cursor_cell()
   return { row = position.row, col = position.curscol }
 end
 
-local function current_target(ignore_enabled)
-  if not platform.available or (not ignore_enabled and not opts.enabled) then return nil end
-  if not tracked_mode() then return nil end
+local function current_target()
+  if not platform.available or not tracked_mode() then return nil end
   if opts.terminal_only and vim.bo.buftype ~= 'terminal' then return nil end
 
   local client = platform.foreground_client(opts.window_class)
   local cursor = cursor_cell()
   if not client or not cursor then return nil end
 
-  local target = geometry.target(client, { columns = vim.o.columns, lines = vim.o.lines }, cursor, opts, calibration)
-  return target, client
+  return geometry.target(client, { columns = vim.o.columns, lines = vim.o.lines }, cursor, opts, calibration)
 end
 
 function M.warp()
-  local target = current_target(false)
-  -- preventing shifting up the cursor to the app header
-  -- The shift is to place the cursor on top of the chat in opencode for scrolling
-  local y = target and target.y
-  local shift_up = y ~= nil and y < 200 and 0 or 150
-  if target then platform.set_cursor_position(target.x, target.y - shift_up) end
-end
+  local target = current_target()
+  if not target then return end
 
-local function request_warp()
-  if pending then return end
-  pending = true
-  vim.schedule(function()
-    pending = false
-    M.warp()
-  end)
-end
-
-function M.enable()
-  opts.enabled = true
-  request_warp()
-  notify 'Enabled'
-end
-
-function M.disable()
-  opts.enabled = false
-  notify 'Disabled'
-end
-
-function M.toggle()
-  if opts.enabled then
-    M.disable()
-  else
-    M.enable()
-  end
+  -- Keep the pointer over OpenCode's chat area when the cursor is lower in the terminal.
+  local shift_up = target.y < 200 and 0 or 150
+  platform.set_cursor_position(target.x, target.y - shift_up)
 end
 
 function M.calibrate()
-  local target = current_target(true)
+  local target = current_target()
   local pointer = platform.cursor_position()
   if not target or not pointer then
     notify('Calibration requires the Neovim Windows Terminal window to be focused', vim.log.levels.WARN)
@@ -119,18 +87,11 @@ function M.reset_calibration()
   notify 'Calibration reset'
 end
 
-function M.status()
-  notify(
-    ('enabled=%s, available=%s, terminal_only=%s, offset=(%d,%d)'):format(opts.enabled, platform.available, opts.terminal_only, calibration.x, calibration.y)
-  )
-end
+function M.status() notify(('available=%s, terminal_only=%s, offset=(%d,%d)'):format(platform.available, opts.terminal_only, calibration.x, calibration.y)) end
 
 local function create_commands()
   if commands_created then return end
   commands_created = true
-  vim.api.nvim_create_user_command('CursorWarpEnable', M.enable, {})
-  vim.api.nvim_create_user_command('CursorWarpDisable', M.disable, {})
-  vim.api.nvim_create_user_command('CursorWarpToggle', M.toggle, {})
   vim.api.nvim_create_user_command('CursorWarpNow', M.warp, {})
   vim.api.nvim_create_user_command('CursorWarpCalibrate', M.calibrate, {})
   vim.api.nvim_create_user_command('CursorWarpResetCalibration', M.reset_calibration, {})
@@ -141,18 +102,6 @@ function M.setup(config)
   opts = vim.tbl_deep_extend('force', vim.deepcopy(defaults), config or {})
   load_calibration()
   create_commands()
-
-  local group = vim.api.nvim_create_augroup('cursor-warp', { clear = true })
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'WinEnter', 'WinResized', 'BufEnter', 'WinScrolled' }, {
-    group = group,
-    callback = request_warp,
-  })
-  vim.api.nvim_create_autocmd('ModeChanged', {
-    group = group,
-    callback = function()
-      if tracked_mode() then request_warp() end
-    end,
-  })
 end
 
 return M
