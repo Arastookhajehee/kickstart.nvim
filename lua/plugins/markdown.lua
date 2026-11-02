@@ -20,6 +20,7 @@ return {
   },
   {
     '3rd/image.nvim',
+    build = false, -- magick_cli does not need the Lua rock
     ft = { 'markdown', 'vimwiki', 'typst', 'norg' },
     event = {
       'BufReadPre *.png',
@@ -29,13 +30,11 @@ return {
       'BufReadPre *.webp',
       'BufReadPre *.avif',
     },
-    cond = not_windows,
     config = function() require 'custom.plugins.image' end,
   },
   {
     '3rd/diagram.nvim',
     ft = { 'markdown', 'norg' },
-    cond = not_windows,
     dependencies = { '3rd/image.nvim' },
     config = function() require 'custom.plugins.diagram-nvim' end,
   },

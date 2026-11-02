@@ -54,3 +54,4 @@ if vim.env.NVIM_OS_TYPE == 'WIN' or vim.fn.has 'win32' == 1 then
 end
 
 vim.schedule(function() vim.opt.clipboard = 'unnamedplus' end)
+vim.opt.fileformats = { 'unix', 'dos' }
