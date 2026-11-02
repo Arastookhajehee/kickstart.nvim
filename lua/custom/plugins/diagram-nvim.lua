@@ -46,7 +46,7 @@ require('diagram').setup {
       background = 'transparent',
 
       cli_args = {
-        '--width',
+        '--size',
         '600',
         '--scale',
         '4',
