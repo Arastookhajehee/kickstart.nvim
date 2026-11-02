@@ -47,7 +47,7 @@ require('diagram').setup {
 
       cli_args = {
         '--size',
-        '600',
+        '1200',
         '--scale',
         '4',
         '--cssFile',
