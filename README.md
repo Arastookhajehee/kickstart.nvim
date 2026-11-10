@@ -42,6 +42,29 @@ Run `:Lazy` to inspect plugins. A safe update workflow is:
 
 Use `:Lazy restore` to restore the revisions recorded in the lockfile.
 
+## Lightweight OpenCode editor
+
+Set `NVIM_PROFILE=opencode-editor` to start Neovim with the regular editor
+options and remaps but only Flash navigation (`gs`), Markdownlint diagnostics,
+Markdown table editing, and the built-in paragraph formatter (`qq`). This
+profile does not load the full UI, LSP, completion, or Markdown rendering plugins.
+The normal `nvim` command still uses the full profile when the variable is unset.
+
+In PowerShell, launch OpenCode with the profile inherited by its `/editor` command:
+
+```powershell
+$env:NVIM_PROFILE = 'opencode-editor'
+$env:VISUAL = 'nvim'
+opencode
+```
+
+OpenCode's `/editor` (or Ctrl+X, then E) opens the current prompt in Neovim;
+save and quit to return it to the composer. To edit another file with the same
+profile, run `nvim notes.md` in that shell. Use a separate shell without
+`NVIM_PROFILE` for the full config, or run
+`Remove-Item Env:NVIM_PROFILE` to restore it in the current shell.
+Markdownlint requires the `markdownlint` executable on your PATH.
+
 ## Basic requirements
 
 - Neovim 0.12 or newer

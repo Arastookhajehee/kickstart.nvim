@@ -60,19 +60,21 @@ map('x', '<C-S-/>', 'gc', { remap = true, desc = 'Toggle comment selection' })
 map('i', 'ii', '<Esc>')
 map('t', 'ii', '<Esc><Esc>')
 
-map('n', '<leader>zig', '<cmd>LspRestart<CR>')
+if vim.g.nvim_profile ~= 'opencode-editor' then map('n', '<leader>zig', '<cmd>LspRestart<CR>') end
 map('n', '<leader>r', [[:%s/\<<C-r><C-w>\>//gc<Left><Left><Left>]], { desc = 'Replace current word' })
 map('x', '<leader>r', [[:s/\%V//gc<Left><Left><Left><Left>]], { desc = 'Replace in selection' })
 map('n', '<leader>do', vim.diagnostic.open_float, { desc = 'Open diagnostics float' })
 map('n', '<leader>h', vim.lsp.buf.hover, { desc = 'Hover docs' })
 map({ 'n', 'x' }, '<leader>H', vim.lsp.buf.code_action, { desc = 'Code action' })
 map('n', '<leader>w', '<cmd>write<CR>', { desc = 'Save file' })
-map('n', '<leader>c', '<cmd>Gitsigns next_hunk<CR>', { desc = 'Next git hunk' })
-map('n', '<leader>C', '<cmd>Gitsigns prev_hunk<CR>', { desc = 'Previous git hunk' })
+if vim.g.nvim_profile ~= 'opencode-editor' then
+  map('n', '<leader>c', '<cmd>Gitsigns next_hunk<CR>', { desc = 'Next git hunk' })
+  map('n', '<leader>C', '<cmd>Gitsigns prev_hunk<CR>', { desc = 'Previous git hunk' })
+end
 map({ 'n', 'i' }, '<leader>id', insert_date_jst, { desc = 'Insert JST date string' })
 map('n', '<leader>m', function() set_mark(false) end, { desc = 'Set local mark' })
 map('n', '<leader>M', function() set_mark(true) end, { desc = 'Set global mark' })
-map('n', 'mm', '<cmd>CursorWarpNow<CR>', { desc = 'Move pointer to cursor' })
+if vim.g.nvim_profile ~= 'opencode-editor' then map('n', 'mm', '<cmd>CursorWarpNow<CR>', { desc = 'Move pointer to cursor' }) end
 map('n', '<C-`>', '<cmd>terminal<CR>', { desc = 'Open terminal' })
 
 require 'custom.plugins.mark_align'

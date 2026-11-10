@@ -13,9 +13,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
-  spec = { { import = 'plugins' } },
+  spec = vim.g.nvim_profile == 'opencode-editor' and require('profiles.opencode-editor') or { { import = 'plugins' } },
   defaults = { lazy = true, version = false },
-  checker = { enabled = true, notify = false },
+  checker = { enabled = vim.g.nvim_profile ~= 'opencode-editor', notify = false },
   change_detection = { notify = false },
   performance = {
     rtp = {
